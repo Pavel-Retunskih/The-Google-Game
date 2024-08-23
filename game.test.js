@@ -16,10 +16,11 @@ beforeEach(async () => {
   status = await game.getStatus();
   settings = await game.getSettings();
   google = await game.getGooglePosition();
+  await game.addPlayer("Player One");
+  await game.addPlayer("Player Two");
 });
 
 //?----------GAME_APP_TESTS-------------
-
 describe("Game App tests", () => {
   it("the game must be change status !!!", async () => {
     expect(status).toBe(GAME_STATUSES.PENDING);
@@ -51,16 +52,19 @@ describe("Player Test", () => {
   it("must be initialized", async () => {
     const playerOnePosition = await game.getPlayerOnePosition();
     const playerTwoPosition = await game.getPlayerTwoPosition();
+
     expect(playerOnePosition).not.toBeUndefined();
     expect(playerTwoPosition).not.toBeUndefined();
   });
   it("Player one must be in the left up corner of grid", async () => {
     let playerOnePosition = await game.getPlayerOnePosition();
+
     expect(playerOnePosition.x).toBe(0);
     expect(playerOnePosition.y).toBe(0);
   });
   it("Player two must be in the right bottom corner of grid", async () => {
     let playerTwoPosition = await game.getPlayerTwoPosition();
+
     expect(playerTwoPosition.x).toBe(settings.gridSize.columnsCount);
     expect(playerTwoPosition.y).toBe(settings.gridSize.rowsCount);
   });

@@ -14,8 +14,8 @@ export class Game {
   #status;
   #settings;
   #google;
-  #playerOne;
-  #playerTwo;
+  #players;
+
   constructor(numberUtil) {
     this.#settings = {
       gridSize: {
@@ -26,12 +26,17 @@ export class Game {
     };
     this.#status = GAME_STATUSES.PENDING;
     this.#numberUtil = numberUtil;
-    this.#google = new Google({ x: 0, y: 0 });
-    this.#playerOne = new Player("Player One", null, { x: 0, y: 0 });
-    this.#playerTwo = new Player("Player One", null, {
-      x: this.#settings.gridSize.columnsCount,
-      y: this.#settings.gridSize.rowsCount,
+    this.#google = new Google({
+      x: Math.floor(this.#settings.gridSize.columnsCount / 2),
+      y: Math.floor(this.#settings.gridSize.rowsCount / 2),
     });
+    this.#players = [];
+
+    // this.#playerOne = new Player("Player One", null, { x: 0, y: 0 });
+    // this.#playerTwo = new Player("Player Two", null, {
+    //   x: this.#settings.gridSize.columnsCount,
+    //   y: this.#settings.gridSize.rowsCount,
+    // });
   }
 
   //?-------------Setters---------
@@ -46,7 +51,22 @@ export class Game {
       this.#jumpGoogle();
     }, this.#settings.jumpInterval);
   }
-
+  async addPlayer(name) {
+    if (this.#players.length > 2) {
+      throw new Error("Maximum number of players reached.");
+    }
+    if (this.#players.length === 0) {
+      this.#players.push(new Player(name, 1, { x: 0, y: 0 }));
+    }
+    if (this.#players.length === 1) {
+      this.#players.push(
+        new Player(name, 2, {
+          x: this.#settings.gridSize.columnsCount,
+          y: this.#settings.gridSize.rowsCount,
+        })
+      );
+    }
+  }
   #jumpGoogle() {
     const newGooglePosition = {
       x: this.#numberUtil.getRandomNumber(
@@ -79,9 +99,9 @@ export class Game {
     return this.#settings;
   }
   async getPlayerOnePosition() {
-    return this.#playerOne.getPosition();
+    return this.#players[0].getPosition();
   }
   async getPlayerTwoPosition() {
-    return this.#playerTwo.getPosition();
+    return this.#players[1].getPosition();
   }
 }

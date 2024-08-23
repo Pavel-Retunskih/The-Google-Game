@@ -1,10 +1,12 @@
 export class Player {
   #name;
+  #id;
   #position;
   #score;
-  constructor(name, score, position) {
+  constructor(name, id, position) {
     this.#name = name;
-    this.#score = score;
+    this.#id = id;
+    this.#score = 0;
     this.#position = position;
   }
   getName() {
@@ -18,5 +20,11 @@ export class Player {
   }
   getScore() {
     return this.#score;
+  }
+  setScore(point) {
+    this.#score += point;
+  }
+  getId() {
+    return this.#id;
   }
 }
