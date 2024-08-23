@@ -28,11 +28,11 @@ export class Game {
     };
   }
 
-  //-------------Setters---------
+  //!-------------Setters---------
   setSettings(settings) {
     this.#settings = settings;
   }
-  //-------------Methods---------
+  //!-------------Methods---------
   async startGame() {
     console.log("Game started");
     this.#status = GAME_STATUSES.IN_PROGRESS;
@@ -59,7 +59,7 @@ export class Game {
       this.#googlePosition = newGooglePosition;
     }
   }
-  //-------------Geters----------
+  //!-------------Geters----------
   async getStatus() {
     return this.#status;
   }
