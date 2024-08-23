@@ -5,4 +5,4 @@
   -- GridSettings(DI)
   -- Player(like google)
 - place players to the grid(left up corner, right down corner)
-  google must jump to the empty cell
+- google must jump to the empty cell

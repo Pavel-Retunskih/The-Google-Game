@@ -11,10 +11,11 @@ export class Game {
   #numberUtil;
   #status;
   #settings;
-  #googlePosition;
-  constructor(numberUtil) {
+  #google;
+  constructor(numberUtil, google) {
     this.#status = GAME_STATUSES.PENDING;
     this.#numberUtil = numberUtil;
+    this.#google = google;
     this.#settings = {
       gridSize: {
         columnsCount: 1,
@@ -22,10 +23,10 @@ export class Game {
       },
       jumpInterval: 20,
     };
-    this.#googlePosition = {
+    this.#google.setPosition({
       x: 0,
       y: 0,
-    };
+    });
   }
 
   //-------------Setters---------
@@ -50,13 +51,14 @@ export class Game {
       ),
       y: this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.rowsCount),
     };
+    const prevGooglePosition = this.#google.getPosition();
     if (
-      this.#googlePosition.x === newGooglePosition.x &&
-      this.#googlePosition.y === newGooglePosition.y
+      prevGooglePosition.x === newGooglePosition.x &&
+      prevGooglePosition.y === newGooglePosition.y
     ) {
       this.#jumpGoogle();
     } else {
-      this.#googlePosition = newGooglePosition;
+      this.#google.setPosition(newGooglePosition);
     }
   }
   //-------------Geters----------
@@ -67,7 +69,7 @@ export class Game {
     return this.#settings;
   }
   async getGooglePosition() {
-    return this.#googlePosition;
+    return this.#google.getPosition();
   }
   async getSettings() {
     return this.#settings;
