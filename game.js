@@ -16,19 +16,13 @@ export class Game {
   #google;
   #players;
 
-  constructor(numberUtil) {
-    this.#settings = {
-      gridSize: {
-        columnsCount: 1,
-        rowsCount: 2,
-      },
-      jumpInterval: 20,
-    };
+  constructor(numberUtil, settings) {
+    this.#settings = settings;
     this.#status = GAME_STATUSES.PENDING;
     this.#numberUtil = numberUtil;
     this.#google = new Google({
-      x: Math.floor(this.#settings.gridSize.columnsCount / 2),
-      y: Math.floor(this.#settings.gridSize.rowsCount / 2),
+      x: Math.floor(this.#settings.getGridSize().columnsCount / 2),
+      y: Math.floor(this.#settings.getGridSize().rowsCount / 2),
     });
     this.#players = [];
 
@@ -54,15 +48,13 @@ export class Game {
   async addPlayer(name) {
     if (this.#players.length > 2) {
       throw new Error("Maximum number of players reached.");
-    }
-    if (this.#players.length === 0) {
+    } else if (this.#players.length === 0) {
       this.#players.push(new Player(name, 1, { x: 0, y: 0 }));
-    }
-    if (this.#players.length === 1) {
+    } else if (this.#players.length === 1) {
       this.#players.push(
         new Player(name, 2, {
-          x: this.#settings.gridSize.columnsCount,
-          y: this.#settings.gridSize.rowsCount,
+          x: this.#settings.getGridSize().columnsCount,
+          y: this.#settings.getGridSize().rowsCount,
         })
       );
     }
@@ -71,14 +63,33 @@ export class Game {
     const newGooglePosition = {
       x: this.#numberUtil.getRandomNumber(
         0,
-        this.#settings.gridSize.columnsCount
+        this.#settings.getGridSize().columnsCount
       ),
-      y: this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.rowsCount),
+      y: this.#numberUtil.getRandomNumber(
+        0,
+        this.#settings.getGridSize().rowsCount
+      ),
     };
     const prevGooglePosition = this.#google.getPosition();
-    if (
+    const playerOnePosition = this.getPlayerOnePosition();
+    const playerTwoPosition = this.getPlayerTwoPosition();
+
+    const isPrevGooglePositionEqualNewGooglePosition =
       prevGooglePosition.x === newGooglePosition.x &&
-      prevGooglePosition.y === newGooglePosition.y
+      prevGooglePosition.y === newGooglePosition.y;
+
+    const isPlayerOnePositionEqualNewGooglePosition =
+      playerOnePosition.x === newGooglePosition.x &&
+      playerOnePosition.y === newGooglePosition.y;
+
+    const isPlayerTwoPositionEqualNewGooglePosition =
+      playerTwoPosition.x === newGooglePosition.x &&
+      playerTwoPosition.y === newGooglePosition.y;
+
+    if (
+      isPrevGooglePositionEqualNewGooglePosition ||
+      isPlayerOnePositionEqualNewGooglePosition ||
+      isPlayerTwoPositionEqualNewGooglePosition
     ) {
       this.#jumpGoogle();
     } else {
@@ -106,5 +117,11 @@ export class Game {
   }
   async getPlayerTwoPosition() {
     return this.#players[1].getPosition();
+  }
+  async getPlayerOne() {
+    return this.#players[0];
+  }
+  async getPlayerTwo() {
+    return this.#players[1];
   }
 }
