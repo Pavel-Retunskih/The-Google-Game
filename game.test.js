@@ -18,29 +18,17 @@ describe("Game App tests", () => {
 describe("Google tests", () => {
   it("the google must be change position every 2 sec!!!", async () => {
     const game = new Game();
-
+    let settings = await game.getSettings();
     await game.startGame();
 
-    let googlePosition1 = await game.getGooglePosition();
-
-    expect(googlePosition1).toBeDefined();
-
-    await delay(3000);
-
-    let googlePosition2 = await game.getGooglePosition();
-    expect(googlePosition1).not.toEqual(googlePosition2);
-
-    // await delay(4000);
-
-    // let googlePosition3 = await game.getGooglePosition();
-    // expect(googlePosition3).not.toEqual(googlePosition2);
+    for (let i = 0; i < 50; i++) {
+      let googlePosition = await game.getGooglePosition();
+      expect(googlePosition).toBeDefined();
+      await delay(settings.jumpInterval);
+      let googlePosition1 = await game.getGooglePosition();
+      expect(googlePosition).not.toEqual(googlePosition1);
+    }
   });
 });
 
-const delay = (ms) => {
-  let delayTimerId;
-  new Promise((res) => {
-    delayTimerId = setTimeout(res, ms);
-  });
-  return clearInterval(delayTimerId);
-};
+const delay = (ms) => new Promise((res) => setTimeout(res, ms));

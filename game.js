@@ -8,11 +8,17 @@ export const GAME_STATUSES = {
 };
 
 export class Game {
-  #settings;
+  #settings = {
+    gridSize: {
+      columnsCount: 1,
+      rowsCount: 2,
+    },
+    jumpInterval: 30,
+  };
   #status = GAME_STATUSES.PENDING;
   #googlePosition = {
-    row: 0,
-    column: 0,
+    x: 0,
+    y: 0,
   };
 
   //-------------Setters---------
@@ -24,26 +30,24 @@ export class Game {
     console.log("Game started");
     this.#status = GAME_STATUSES.IN_PROGRESS;
 
-    this.#jumpGoogle();
+    setInterval(() => {
+      this.#jumpGoogle();
+    }, this.#settings.jumpInterval);
   }
+
   #jumpGoogle() {
-    console.log("Google jumped");
-
-    let prewRowPosition = this.#googlePosition.row;
-    let prewColumnPosition = this.#googlePosition.column;
-
-    do {
-      this.#googlePosition.row = generateRandomNumber(0, 10);
-      this.#googlePosition.column = generateRandomNumber(0, 10);
-      console.log(
-        `New Google position: (${this.#googlePosition.row}, ${
-          this.#googlePosition.column
-        })`
-      );
-    } while (
-      this.#googlePosition.row === prewRowPosition &&
-      this.#googlePosition.column === prewColumnPosition
-    );
+    const newGooglePosition = {
+      x: generateRandomNumber(0, this.#settings.gridSize.columnsCount),
+      y: generateRandomNumber(0, this.#settings.gridSize.rowsCount),
+    };
+    if (
+      this.#googlePosition.x === newGooglePosition.x &&
+      this.#googlePosition.y === newGooglePosition.y
+    ) {
+      this.#jumpGoogle();
+    } else {
+      this.#googlePosition = newGooglePosition;
+    }
   }
   //-------------Geters----------
   async getStatus() {
@@ -54,5 +58,8 @@ export class Game {
   }
   async getGooglePosition() {
     return this.#googlePosition;
+  }
+  async getSettings() {
+    return this.#settings;
   }
 }
