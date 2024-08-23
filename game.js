@@ -1,4 +1,4 @@
-import { generateRandomNumber } from "./randomGenerator";
+import { numberUtil } from "./randomGenerator";
 
 export const GAME_STATUSES = {
   PENDING: "pending",
@@ -8,18 +8,25 @@ export const GAME_STATUSES = {
 };
 
 export class Game {
-  #settings = {
-    gridSize: {
-      columnsCount: 1,
-      rowsCount: 2,
-    },
-    jumpInterval: 30,
-  };
-  #status = GAME_STATUSES.PENDING;
-  #googlePosition = {
-    x: 0,
-    y: 0,
-  };
+  #numberUtil;
+  #status;
+  #settings;
+  #googlePosition;
+  constructor(numberUtil) {
+    this.#status = GAME_STATUSES.PENDING;
+    this.#numberUtil = numberUtil;
+    this.#settings = {
+      gridSize: {
+        columnsCount: 1,
+        rowsCount: 2,
+      },
+      jumpInterval: 20,
+    };
+    this.#googlePosition = {
+      x: 0,
+      y: 0,
+    };
+  }
 
   //-------------Setters---------
   setSettings(settings) {
@@ -37,8 +44,11 @@ export class Game {
 
   #jumpGoogle() {
     const newGooglePosition = {
-      x: generateRandomNumber(0, this.#settings.gridSize.columnsCount),
-      y: generateRandomNumber(0, this.#settings.gridSize.rowsCount),
+      x: this.#numberUtil.getRandomNumber(
+        0,
+        this.#settings.gridSize.columnsCount
+      ),
+      y: this.#numberUtil.getRandomNumber(0, this.#settings.gridSize.rowsCount),
     };
     if (
       this.#googlePosition.x === newGooglePosition.x &&

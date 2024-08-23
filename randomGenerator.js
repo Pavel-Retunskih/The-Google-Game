@@ -1,3 +1,8 @@
-export function generateRandomNumber(minValue, maxValue) {
-  return Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
+export class numberMagicUtil {
+  getRandomNumber(minInclusive, maxInclusive) {
+    return (
+      Math.floor(Math.random() * (maxInclusive - minInclusive + 1)) +
+      minInclusive
+    );
+  }
 }
