@@ -29,11 +29,11 @@ export class Game {
     });
   }
 
-  //-------------Setters---------
+  //?-------------Setters---------
   setSettings(settings) {
     this.#settings = settings;
   }
-  //-------------Methods---------
+  //?-------------Methods---------
   async startGame() {
     console.log("Game started");
     this.#status = GAME_STATUSES.IN_PROGRESS;
@@ -43,6 +43,7 @@ export class Game {
     }, this.#settings.jumpInterval);
   }
 
+  //TODO: Replace to the google class
   #jumpGoogle() {
     const newGooglePosition = {
       x: this.#numberUtil.getRandomNumber(
@@ -61,7 +62,7 @@ export class Game {
       this.#google.setPosition(newGooglePosition);
     }
   }
-  //-------------Geters----------
+  //?-------------Getters---------
   async getStatus() {
     return this.#status;
   }
