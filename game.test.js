@@ -3,18 +3,25 @@ import { expect, describe, it, beforeEach } from "@jest/globals";
 import { numberMagicUtil } from "./randomGenerator";
 import { Google } from "./google";
 import { Position } from "./position";
+
+let numberUtil;
+let google;
+let game;
+let settings;
+let status;
+
+beforeEach(async () => {
+  numberUtil = new numberMagicUtil();
+  google = new Google();
+  game = new Game(numberUtil, google);
+  status = await game.getStatus();
+  settings = await game.getSettings();
+});
+
 //?----------GAME_APP_TESTS-------------
 
 describe("Game App tests", () => {
-  beforeEach(() => {
-    const numberUtil = new numberMagicUtil();
-    const google = new Google();
-    const game = new Game(numberUtil, google);
-    return game;
-  });
   it("the game must be change status !!!", async () => {
-    let status = await game.getStatus();
-
     expect(status).toBe(GAME_STATUSES.PENDING);
 
     game.startGame();
@@ -24,12 +31,15 @@ describe("Game App tests", () => {
 });
 //?----------GOOGLE_TEST-----------------
 describe("Google tests", () => {
-  it("The google must be initialized", async () => {});
+  it("must be initialized", () => {
+    expect(game.getGoogle()).not.toBeUndefined();
+  });
+  it("should set and get position correctly", () => {
+    const newPosition = { x: 2, y: 3 };
+    google.setPosition(newPosition);
+    expect(google.getPosition()).toBe(newPosition);
+  });
   it("the google must be change position every 2 sec!!!", async () => {
-    const numberUtil = new numberMagicUtil();
-    const google = new Google();
-    const game = new Game(numberUtil, google);
-    let settings = await game.getSettings();
     await game.startGame();
 
     for (let i = 0; i < 100; i++) {
