@@ -1,4 +1,6 @@
-import { numberUtil } from "./randomGenerator";
+import { Position } from "./position";
+import { Google } from "./google";
+import { Player } from "./player";
 
 export const GAME_STATUSES = {
   PENDING: "pending",
@@ -12,10 +14,9 @@ export class Game {
   #status;
   #settings;
   #google;
-  constructor(numberUtil, google) {
-    this.#status = GAME_STATUSES.PENDING;
-    this.#numberUtil = numberUtil;
-    this.#google = google;
+  #playerOne;
+  #playerTwo;
+  constructor(numberUtil) {
     this.#settings = {
       gridSize: {
         columnsCount: 1,
@@ -23,9 +24,13 @@ export class Game {
       },
       jumpInterval: 20,
     };
-    this.#google.setPosition({
-      x: 0,
-      y: 0,
+    this.#status = GAME_STATUSES.PENDING;
+    this.#numberUtil = numberUtil;
+    this.#google = new Google({ x: 0, y: 0 });
+    this.#playerOne = new Player("Player One", null, { x: 0, y: 0 });
+    this.#playerTwo = new Player("Player One", null, {
+      x: this.#settings.gridSize.columnsCount,
+      y: this.#settings.gridSize.rowsCount,
     });
   }
 
@@ -35,7 +40,6 @@ export class Game {
   }
   //?-------------Methods---------
   async startGame() {
-    console.log("Game started");
     this.#status = GAME_STATUSES.IN_PROGRESS;
 
     setInterval(() => {
@@ -43,7 +47,6 @@ export class Game {
     }, this.#settings.jumpInterval);
   }
 
-  //TODO: Replace to the google class
   #jumpGoogle() {
     const newGooglePosition = {
       x: this.#numberUtil.getRandomNumber(
@@ -69,13 +72,16 @@ export class Game {
   async getSettings() {
     return this.#settings;
   }
-  async getGoogle() {
-    return this.#google;
-  }
   async getGooglePosition() {
     return this.#google.getPosition();
   }
   async getSettings() {
     return this.#settings;
+  }
+  async getPlayerOnePosition() {
+    return this.#playerOne.getPosition();
+  }
+  async getPlayerTwoPosition() {
+    return this.#playerTwo.getPosition();
   }
 }

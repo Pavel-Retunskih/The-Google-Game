@@ -12,10 +12,10 @@ let status;
 
 beforeEach(async () => {
   numberUtil = new numberMagicUtil();
-  google = new Google();
-  game = new Game(numberUtil, google);
+  game = new Game(numberUtil);
   status = await game.getStatus();
   settings = await game.getSettings();
+  google = await game.getGooglePosition();
 });
 
 //?----------GAME_APP_TESTS-------------
@@ -32,12 +32,7 @@ describe("Game App tests", () => {
 //?----------GOOGLE_TEST-----------------
 describe("Google tests", () => {
   it("must be initialized", () => {
-    expect(game.getGoogle()).not.toBeUndefined();
-  });
-  it("should set and get position correctly", () => {
-    const newPosition = { x: 2, y: 3 };
-    google.setPosition(newPosition);
-    expect(google.getPosition()).toBe(newPosition);
+    expect(google).not.toBeUndefined();
   });
   it("the google must be change position every 2 sec!!!", async () => {
     await game.startGame();
@@ -51,5 +46,23 @@ describe("Google tests", () => {
     }
   });
 });
-
+//?----------PLAYER_TEST------------------
+describe("Player Test", () => {
+  it("must be initialized", async () => {
+    const playerOnePosition = await game.getPlayerOnePosition();
+    const playerTwoPosition = await game.getPlayerTwoPosition();
+    expect(playerOnePosition).not.toBeUndefined();
+    expect(playerTwoPosition).not.toBeUndefined();
+  });
+  it("Player one must be in the left up corner of grid", async () => {
+    let playerOnePosition = await game.getPlayerOnePosition();
+    expect(playerOnePosition.x).toBe(0);
+    expect(playerOnePosition.y).toBe(0);
+  });
+  it("Player two must be in the right bottom corner of grid", async () => {
+    let playerTwoPosition = await game.getPlayerTwoPosition();
+    expect(playerTwoPosition.x).toBe(settings.gridSize.columnsCount);
+    expect(playerTwoPosition.y).toBe(settings.gridSize.rowsCount);
+  });
+});
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
