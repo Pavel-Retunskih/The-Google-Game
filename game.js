@@ -85,6 +85,9 @@ export class Game {
       this.#google.setPosition(newGooglePosition);
     }
   }
+  #moveUnit(x, y) {
+    return new Position(x, y);
+  }
   //?-------------Getters---------
   async getStatus() {
     return this.#status;

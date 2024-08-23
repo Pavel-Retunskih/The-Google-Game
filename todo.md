@@ -1,5 +1,4 @@
 (A) Create classes:
--- Position(GRASP)
 -- Settings(DI)
 -- GridSettings(DI)
 
