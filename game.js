@@ -17,8 +17,8 @@ export class Game {
     this.#numberUtil = numberUtil;
     this.#settings = {
       gridSize: {
-        columnsCount: 1,
-        rowsCount: 2,
+        columnsCount: 0,
+        rowsCount: 1,
       },
       jumpInterval: 20,
     };
@@ -59,7 +59,7 @@ export class Game {
       this.#googlePosition = newGooglePosition;
     }
   }
-  //!-------------Geters----------
+  //!-------------Getters----------
   async getStatus() {
     return this.#status;
   }
