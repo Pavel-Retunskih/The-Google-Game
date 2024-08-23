@@ -69,6 +69,9 @@ export class Game {
   async getSettings() {
     return this.#settings;
   }
+  async getGoogle() {
+    return this.#google;
+  }
   async getGooglePosition() {
     return this.#google.getPosition();
   }
