@@ -53,8 +53,8 @@ export class Game {
     } else if (this.#players.length === 1) {
       this.#players.push(
         new Player(name, 2, {
-          x: this.#settings.getGridSize().columnsCount,
-          y: this.#settings.getGridSize().rowsCount,
+          x: this.#settings.getGridSize().columnsCount - 1,
+          y: this.#settings.getGridSize().rowsCount - 1,
         })
       );
     }

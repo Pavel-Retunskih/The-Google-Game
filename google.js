@@ -1,7 +1,7 @@
 export class Google {
   #position;
   constructor(x, y) {
-    this.#position = { x: x, y: y };
+    this.#position = { x, y };
   }
   setPosition(newPosition) {
     this.#position = newPosition;

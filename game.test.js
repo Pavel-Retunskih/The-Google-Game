@@ -96,8 +96,8 @@ describe("Player Test", () => {
   it("Player two must be in the right bottom corner of grid", async () => {
     let playerTwoPosition = await game.getPlayerTwoPosition();
 
-    expect(playerTwoPosition.x).toBe(settings.getGridSize().columnsCount);
-    expect(playerTwoPosition.y).toBe(settings.getGridSize().rowsCount);
+    expect(playerTwoPosition.x).toBe(settings.getGridSize().columnsCount - 1);
+    expect(playerTwoPosition.y).toBe(settings.getGridSize().rowsCount - 1);
   });
 });
 //?----------SETTINGS_TEST------------------
