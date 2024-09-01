@@ -3,6 +3,7 @@ import { expect, describe, it, beforeEach } from "@jest/globals";
 import { numberMagicUtil } from "./randomGenerator";
 import { Settings } from "./settings";
 import { GridSettings } from "./gridSettings";
+import { Position } from "./position";
 
 let numberUtil;
 let google;
@@ -122,4 +123,13 @@ describe("Settings test", () => {
     expect(settings.getPointsToLose()).toBe(10);
   });
 });
+//?------------POSITION---------------------
+describe("Position test", () => {
+  it("position should be correct", async () => {
+    let position = new Position(2, 0);
+    expect(await position.getPosition()).toEqual({ x: 2, y: 0 });
+    expect(await position.equal({ x: 2, y: 0 })).toBe(true);
+  });
+});
+
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
