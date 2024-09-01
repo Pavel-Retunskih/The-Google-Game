@@ -1,5 +1,6 @@
 import { Game, GAME_STATUSES } from "./game";
 import { expect, describe, it, beforeEach } from "@jest/globals";
+
 import { numberMagicUtil } from "./randomGenerator";
 import { Settings } from "./settings";
 import { GridSettings } from "./gridSettings";
@@ -100,6 +101,13 @@ describe("Player Test", () => {
     expect(playerTwoPosition.x).toBe(settings.getGridSize().columnsCount - 1);
     expect(playerTwoPosition.y).toBe(settings.getGridSize().rowsCount - 1);
   });
+  it("Player one must move to the correct position", async () => {
+    const playerOne = await game.getPlayerOne();
+    const newPosition = new Position({ x: 2, y: 3 });
+    playerOne.setPosition(newPosition);
+    let playerOnePosition = await game.getPlayerOnePosition();
+    expect(await playerOnePosition.isEqual({ x: 2, y: 3 })).toBe(true);
+  });
 });
 //?----------SETTINGS_TEST------------------
 describe("Settings test", () => {
@@ -126,10 +134,15 @@ describe("Settings test", () => {
 //?------------POSITION---------------------
 describe("Position test", () => {
   it("position should be correct", async () => {
-    let position = new Position(2, 0);
+    let position = new Position({ x: 2, y: 0 });
     expect(await position.getPosition()).toEqual({ x: 2, y: 0 });
-    expect(await position.equal({ x: 2, y: 0 })).toBe(true);
+    expect(await position.isEqual({ x: 2, y: 0 })).toBe(true);
   });
+
+  // it("google position should be equal to player position", async()=>{
+  //   let position = new Position({ x: 2, y: 0 });
+
+  // })
 });
 
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));

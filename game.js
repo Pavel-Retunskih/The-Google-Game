@@ -8,6 +8,12 @@ export const GAME_STATUSES = {
   PAUSED: "paused",
   COMPLETED: "completed",
 };
+export const PLAYERS_DIRECTIONS = {
+  UP: "UP",
+  DOWN: "DOWN",
+  LEFT: "LEFT",
+  RIGHT: "RIGHT",
+};
 
 export class Game {
   #numberUtil;
@@ -25,12 +31,6 @@ export class Game {
       y: Math.floor(this.#settings.getGridSize().rowsCount / 2),
     });
     this.#players = [];
-
-    // this.#playerOne = new Player("Player One", null, { x: 0, y: 0 });
-    // this.#playerTwo = new Player("Player Two", null, {
-    //   x: this.#settings.gridSize.columnsCount,
-    //   y: this.#settings.gridSize.rowsCount,
-    // });
   }
 
   //?-------------Setters---------
@@ -96,8 +96,17 @@ export class Game {
       this.#google.setPosition(newGooglePosition);
     }
   }
-  #moveUnit(x, y) {
-    return new Position(x, y);
+  async delta(eventKey) {
+    switch (eventKey) {
+      case PLAYERS_DIRECTIONS.UP:
+        {
+        }
+
+        break;
+
+      default:
+        break;
+    }
   }
   //?-------------Getters---------
   async getStatus() {
